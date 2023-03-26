@@ -36,7 +36,6 @@ function inputHandler (event) {
         const population = data[0].population;
         const languages = Object.values(data[0].languages).join(', ');
 
-
         if(data.length > 10 && searchQuery !== '') {
             clearAllInfo();
             Notify.info("Too many matches found. Please enter a more specific name");
@@ -53,6 +52,7 @@ function inputHandler (event) {
     })
 
     .catch(error => {
+        clearAllInfo();
         Notify.failure("Oops, there is no country with that name");
     });    
 };
@@ -61,7 +61,8 @@ function createCountriesListMarkup (data) {
     countriesListEl.classList.remove('is-hidden');
     clearAllInfo();
     
-    const countriesListMarkup = data.map(el => `<li><h3>${el.name.official}</h3></li>`).join(' ');
+    const countriesListMarkup = data.map(el => `<li><h3 class="country-name"><svg width="40" height="40"><image href="${el.flags.svg}"
+    width="40" height="40"/></svg>${el.name.official}</h3></li>`).join(' ');
 
     countriesListEl.insertAdjacentHTML('beforeend', countriesListMarkup);
 };
@@ -70,12 +71,13 @@ function createCountryCardMarkup (flag, country, capital, population, languages)
     countriesListEl.classList.add('is-hidden');
     clearAllInfo();
 
-    countryCardEl.innerHTML = `<h2 class="country-name">${country}</h2>
-<p class="country-info"><span class="country-key">Capital: </span>${capital}</p> 
-<p class="country-info"><span class="country-key">Population: </span>${population}</p> 
-<p class="country-info"><span class="country-key">Languages: </span>${languages}</p>`;
+    countryCardEl.innerHTML = ` <h2 class="country-name"><svg width="40" height="40"><image href="${flag}"
+    width="40" height="40"/></svg>
+   ${country}</h2>
+<p class="country-value"><span class="country-key">Capital: </span>${capital}</p> 
+<p class="country-value"><span class="country-key">Population: </span>${population}</p> 
+<p class="country-value"><span class="country-key">Languages: </span>${languages}</p>`;
 }
-
 
 function clearAllInfo () {
     countriesListEl.innerHTML = '';
