@@ -29,12 +29,9 @@ function inputHandler (event) {
     fetchCountries(inputEl.value)
     .then(data => {
         // console.log(data);
+        const { flags:{svg: flag}, name:{official: countryName}, capital:[capitalCity], population, languages } = data[0];
 
-        const flag = data[0].flags.svg;
-        const country = data[0].name.official;
-        const capital = data[0].capital[0];
-        const population = data[0].population;
-        const languages = Object.values(data[0].languages).join(', ');
+        const languagesOfficial = Object.values(languages).join(', ');
 
         if(data.length > 10 && searchQuery !== '') {
             clearAllInfo();
@@ -47,7 +44,7 @@ function inputHandler (event) {
             return;
         }
 
-        createCountryCardMarkup(flag, country, capital, population, languages);
+        createCountryCardMarkup(flag, countryName, capitalCity, population, languagesOfficial);
         return data;
     })
 
